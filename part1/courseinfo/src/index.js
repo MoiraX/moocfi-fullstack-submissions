@@ -1,6 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+const Course = (props) => {
+  return (
+    <div>
+      <Header course={props.course.name} />
+      <Content parts={props.course.parts} />
+      <Total parts={props.course.parts} /> 
+    </div>
+  )
+}
+
 const Header = (props) => {
   return (
     <div>
@@ -40,8 +50,9 @@ const Total = (props) => {
 }
 
 const App = () => {
-    const course = 'Half Stack application development'
-    const parts = [
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
       {
         name: 'Fundamentals of React',
         exercises: 10
@@ -55,14 +66,13 @@ const App = () => {
         exercises: 14
       }
     ]
-  
-    return (
-      <div>
-        <Header course={course} />
-        <Content parts={parts} />       
-        <Total parts={parts} />
-      </div>
-    )
   }
   
-  ReactDOM.render(<App />, document.getElementById('root'))
+  return (
+    <div>
+      <Course course={course} />
+    </div>
+  )
+}
+  
+ReactDOM.render(<App />, document.getElementById('root'))
