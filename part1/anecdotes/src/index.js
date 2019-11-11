@@ -9,6 +9,9 @@ const Button = ({ onClick, text }) => (
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+
+  const emptyVotes = new Array(props.anecdotes.length).fill(0)
+  const [votes, setVotes] = useState(emptyVotes)
   
   // function from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
   function getRandomInt(min, max) {
@@ -21,11 +24,21 @@ const App = (props) => {
     setSelected(getRandomInt(0, props.anecdotes.length))
   }
 
+  const handleVoteClick = () => {
+    const votesCopy = [...votes]
+    votesCopy[selected] += 1
+    setVotes(votesCopy)
+  }
+
   return (
     <div>
       <div>
         {props.anecdotes[selected]}
-      </div>
+      </div> 
+      <div> 
+        has {votes[selected]} votes
+      </div>  
+      <Button onClick={handleVoteClick} text=' vote ' />
       <Button onClick={handleSelectClick} text='next anecdote' />
     </div>
   )
