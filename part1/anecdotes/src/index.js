@@ -2,17 +2,28 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const Button = ({ onClick, text }) => (
-    <button onClick={onClick}>
-      {text}
-    </button>
-  )
+  <button onClick={onClick}>
+    {text}
+  </button>
+)
 
-const App = (props) => {
+const Anecdote = ({ anecdote, vote }) => (
+  <div>
+    <div>
+      {anecdote}
+    </div>
+    <div>
+      has {vote} votes
+    </div>
+  </div>
+)
+
+const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0)
 
-  const emptyVotes = new Array(props.anecdotes.length).fill(0)
+  const emptyVotes = new Array(anecdotes.length).fill(0)
   const [votes, setVotes] = useState(emptyVotes)
-  
+
   // function from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
   function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -21,7 +32,7 @@ const App = (props) => {
   }
 
   const handleSelectClick = () => {
-    setSelected(getRandomInt(0, props.anecdotes.length))
+    setSelected(getRandomInt(0, anecdotes.length))
   }
 
   const handleVoteClick = () => {
@@ -30,16 +41,16 @@ const App = (props) => {
     setVotes(votesCopy)
   }
 
+  const getHighVoteIdx = () => votes.indexOf(Math.max(...votes))
+
   return (
     <div>
-      <div>
-        {props.anecdotes[selected]}
-      </div> 
-      <div> 
-        has {votes[selected]} votes
-      </div>  
+      <h2>Anecdote of the day</h2>
+      <Anecdote anecdote={anecdotes[selected]} vote={votes[selected]} />
       <Button onClick={handleVoteClick} text=' vote ' />
       <Button onClick={handleSelectClick} text='next anecdote' />
+      <h2>Anecdote with most votes</h2>
+      <Anecdote anecdote={anecdotes[getHighVoteIdx()]} vote={votes[getHighVoteIdx()]} />
     </div>
   )
 }
